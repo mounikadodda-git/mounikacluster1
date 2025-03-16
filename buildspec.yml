@@ -3,40 +3,29 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo "Logging in to Amazon ECR..."
+      - echo Logging in to Amazon ECR...
       - aws --version
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 124355670627.dkr.ecr.us-east-1.amazonaws.com
-      - export REPOSITORY_URI=124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt
-      - echo "Repository URI set to $REPOSITORY_URI"
-
+      - REPOSITORY_URI=124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt 
   build:
     commands:
-      - echo "Build started on $(date)"
-      - echo "Building the Docker image..."
+      - echo Build started on date
+      - echo Building the Docker image...
       - docker build -t mounikarepopvt .
-      - docker tag mounikarepopvt:latest $REPOSITORY_URI:latest
-      - docker tag mounikarepopvt:latest $REPOSITORY_URI:$(date +%Y%m%d%H%M%S)
-
+      - docker tag mounikarepopvt:latest 124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt:latest
   post_build:
     commands:
-      - echo "Build completed on $(date)"
-      - echo "Pushing the Docker images..."
-      - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:$(date +%Y%m%d%H%M%S)
+      - echo Build completed on date
+      - echo Pushing the Docker images...
+      - docker push 124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt:latest
+      - echo Writing image definitions file...
+      - printf '[{"name":"%s","imageUri":"%s"}]' "mounika" "$REPOSITORY_URI:latest" > imagedefinitions.json
       
-      - echo "Writing image definitions file..."
-      - printf '[{"name":"mounikarepopvt","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
-
-      - echo "Checking AWS CLI and Kubernetes tools..."
-      - aws eks --version
-      - kubectl version --client
-
       - echo "Updating Kubernetes deployment..."
       - aws eks update-kubeconfig --region us-east-1 --name charming-jazz-walrus
-      - sed -i "s|ubuntu|$REPOSITORY_URI:latest|g" deployment.yml
+      - sed -i "s|ubuntu|124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt:latest|g" deployment.yml
       - kubectl apply -f deployment.yml --validate=false
       - echo "Deployment successful!"
 
 artifacts:
-  files:
-    - imagedefinitions.json
+    files: imagedefinitions.json
