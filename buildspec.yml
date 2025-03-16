@@ -5,25 +5,25 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 970547349158.dkr.ecr.ap-south-1.amazonaws.com
-      - REPOSITORY_URI=970547349158.dkr.ecr.ap-south-1.amazonaws.com/nani-repo
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 124355670627.dkr.ecr.us-east-1.amazonaws.com
+      - REPOSITORY-URL=124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt
   build:
     commands:
       - echo Build started on date
       - echo Building the Docker image...
-      - docker build -t nani-repo .
-      - docker tag nani-repo:latest 970547349158.dkr.ecr.ap-south-1.amazonaws.com/nani-repo:latest
+      -  docker build -t mounikarepopvt .
+      - docker tag mounikarepopvt:latest 124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt:latest
   post_build:
     commands:
       - echo Build completed on date
       - echo Pushing the Docker images...
-      - docker push 970547349158.dkr.ecr.ap-south-1.amazonaws.com/nani-repo:latest
+      - docker push 124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt:latest
       - echo Writing image definitions file...
-      - printf '[{"name":"%s","imageUri":"%s"}]' pradeep $REPOSITORY_URI:latest > imagedefinitions.json
+      - printf '[{"name":"%s","imageUri":"%s"}]' MOUNIKA $REPOSITORY_URI:latest > imagedefinitions.json
       
       - echo "Updating Kubernetes deployment..."
-      - aws eks update-kubeconfig --region ap-south-1 --name nani-cluster
-      - sed -i "s|ubuntu|970547349158.dkr.ecr.ap-south-1.amazonaws.com/nani-repo:latest|g" deploy.yml
+      - aws eks update-kubeconfig --region us-east-1 --name charming-jazz-walrus
+      - sed -i "s|ubuntu|124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt:latest|g" deploy.yml
 - kubectl apply -f deploy.yml --validate=false
       - echo "Deployment successful!"
 
