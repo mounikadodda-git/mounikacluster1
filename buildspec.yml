@@ -23,8 +23,8 @@ phases:
       
       - echo "Updating Kubernetes deployment..."
       - aws eks update-kubeconfig --region us-east-1 --name charming-jazz-walrus
-      - sed -i "s|ubuntu|124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt:latest|g" deploy.yml
-- kubectl apply -f deploy.yml --validate=false
+      - sed -i "s|ubuntu|124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt:latest|g" deployment.yml
+      - kubectl apply -f deployment.yml --validate=false
       - echo "Deployment successful!"
 
 artifacts:
