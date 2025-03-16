@@ -19,7 +19,7 @@ phases:
       - echo Pushing the Docker images...
       - docker push 124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt:latest
       - echo Writing image definitions file...
-      - printf '[{"name":"%s","imageUri":"%s"}]' MOUNIKA $REPOSITORY_URI:latest > imagedefinitions.json
+      - printf '[{"name":"%s","imageUri":"%s"}]' mounika $REPOSITORY_URI:latest > imagedefinitions.json
       
       - echo "Updating Kubernetes deployment..."
       - aws eks update-kubeconfig --region us-east-1 --name charming-jazz-walrus
