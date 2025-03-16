@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mounika
+  labels:
+    app: mounikapipeline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mounikapipeline
+  template:
+    metadata:
+      labels:
+        app: mounikapipeline
+    spec:
+      containers:
+        - name: my-eks-pipeline_mounikacontainer
+          image: ubuntu
+          ports:
+            - containerPort: 80
