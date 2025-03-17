@@ -6,24 +6,24 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 124355670627.dkr.ecr.us-east-1.amazonaws.com
-      - REPOSITORY_URI=124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt 
+      - REPOSITORY_URI=124355670627.dkr.ecr.us-east-1.amazonaws.com/mouniecr
   build:
     commands:
       - echo Build started on date
       - echo Building the Docker image...
-      - docker build -t mounikarepopvt .
-      - docker tag mounikarepopvt:latest 124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt:latest 
+      - docker build -t mouniecr .
+      - docker tag mouniecr:latest 124355670627.dkr.ecr.us-east-1.amazonaws.com/mouniecr:latest 
   post_build:
     commands:
       - echo Build completed on date
       - echo Pushing the Docker images...
-      - docker push 124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt:latest
+      - docker push 124355670627.dkr.ecr.us-east-1.amazonaws.com/mouniecr:latest
       - echo Writing image definitions file...
-      - printf '[{"name":"%s","imageUri":"%s"}]' "mounika" "$REPOSITORY_URI:latest" > imagedefinitions.json
+      - printf '[{"name":"%s","imageUri":"%s"}]' "mounika" "124355670627.dkr.ecr.us-east-1.amazonaws.com/mouniecr:latest" > imagedefinitions.json
       
       - echo "Updating Kubernetes deployment..."
       - aws eks update-kubeconfig --region us-east-1 --name charming-jazz-walrus
-      - sed -i "s|ubuntu|124355670627.dkr.ecr.us-east-1.amazonaws.com/mounikarepopvt:latest|g" deployment.yml
+      - sed -i "s|ubuntu_124355670627.dkr.ecr.us-east-1.amazonaws.com/mouniecr:latest|g" deployment.yml
       - kubectl apply -f deployment.yml --validate=false
       - echo "Deployment successful!"
 
