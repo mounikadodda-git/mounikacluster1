@@ -22,7 +22,7 @@ phases:
       - printf '[{"name":"%s","imageUri":"%s"}]' "mounika" "124355670627.dkr.ecr.us-east-1.amazonaws.com/mouniecr:latest" > imagedefinitions.json
       
       - echo "Updating Kubernetes deployment..."
-      - aws eks update-kubeconfig --region us-east-1 --name charming-jazz-walrus
+      - aws eks update-kubeconfig --region us-east-1 --name mounikacluster1
       - sed -i "s|ubuntu_124355670627.dkr.ecr.us-east-1.amazonaws.com/mouniecr:latest|g" deployment.yml
       - kubectl apply -f deployment.yml --validate=false
       - echo "Deployment successful!"
